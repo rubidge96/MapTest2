@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Test2">
       <EntityTypeMapping TypeName="MapData.Test2">
         <MappingFragment StoreEntitySet="Test2">
+          <ScalarProperty Name="Region" ColumnName="Region" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="City" ColumnName="City" />

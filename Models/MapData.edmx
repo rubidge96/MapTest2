@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MapData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MapData.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Test db.dbo.Test2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Test2">
@@ -12,8 +12,9 @@ warning 6002: The table/view 'Test db.dbo.Test2' does not have a primary key def
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="10" />
-          <Property Name="City" Type="nchar" MaxLength="10" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Region" Type="nvarchar" MaxLength="50" />
           <Property Name="Lat" Type="float" />
           <Property Name="Long" Type="float" />
         </EntityType>
@@ -23,13 +24,13 @@ warning 6002: The table/view 'Test db.dbo.Test2' does not have a primary key def
     [Test2].[id] AS [id], 
     [Test2].[Name] AS [Name], 
     [Test2].[City] AS [City], 
+    [Test2].[Region] AS [Region], 
     [Test2].[Lat] AS [Lat], 
     [Test2].[Long] AS [Long]
     FROM [dbo].[Test2] AS [Test2]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MapData" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -38,10 +39,11 @@ warning 6002: The table/view 'Test db.dbo.Test2' does not have a primary key def
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Lat" Type="Double" />
           <Property Name="Long" Type="Double" />
+          <Property Name="Region" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="Test_dbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Test2" EntityType="Self.Test2" />
@@ -55,6 +57,7 @@ warning 6002: The table/view 'Test db.dbo.Test2' does not have a primary key def
           <EntitySetMapping Name="Test2">
             <EntityTypeMapping TypeName="MapData.Test2">
               <MappingFragment StoreEntitySet="Test2">
+                <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="City" ColumnName="City" />

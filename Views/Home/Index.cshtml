@@ -1,63 +1,168 @@
-﻿@using MapTest
-@model IEnumerable<MapTest.Models.Test2>
+﻿@model IEnumerable<MapTest.Models.Test2>
+
 @{
     ViewBag.Title = "Home Page";
 }
+
 <!doctype html>
 <html>
+@*<head>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
+</head>*@
 <body>
-    <div class="jumbotron">
-        <h1>Map Test Page</h1>
-    </div>
-    <div>
-        @Html.ActionLink("List of locations", "Index", "Subjects")
-    </div>
-    <div id="map" style="width:100%;height:500px"></div>
+
+    <form action="javascript:void(0)" id="form">
+        <input type="text" id="postcode" placeholder="Enter a postcode">
+        <input type="submit" value="Show me" />
+    </form>
+
+    <select name="Radius Select" id="radSelect">
+        <option value="5">5 Miles</option>
+        <option value="10">10 Miles</option>
+        <option value="15">15 Miles</option>
+        <option value="20">20 Miles</option>
+        <option value="25">25 Miles</option>
+        <option value="25+" selected="selected">25+ Miles</option>
+    </select>
+
+    <select name="Region">
+        
+        <option value="East Midlands">East Midlands</option>
+        <option value="West Midlands">West Midlands</option>
+        <option value="Bedfordshire">Bedfordshire</option>
+        <option value="Cambridge">Cambridge</option>
+        <option value="East of England">East of England</option>
+        <option value="Hertfordshire">Hertfordshire</option>
+        <option value="Milton Keynes">Milton Keynes</option>
+        <option value="Norfolk">Norfolk</option>
+        <option value="Northamptonshire">Northamptonshire</option>
+        <option value="Suffolk">Suffolk</option>
+        <option value="Essex">Essex</option>
+        <option value="Kent and East Sussex">Kent and East Sussex</option>
+        <option value="London">London</option>
+        <option value="North East">North East</option>
+        <option value="North West">North West</option>
+        <option value="Staffordshire">Staffordshire</option>
+        <option value="The Humber">The Humber</option>
+        <option value="Yorkshire">Yorkshire</option>
+    </select>
+
+    <div id="map" style="width:100%;height:450px"></div>
 
 
-    <script>
+
+    <script type="text/javascript">
+
         function myMap() {
             var lat = 52.4283381;
             var lng = -1.601519;
-            var myLatLng = { lat: 52.428381, lng: -1.601519 };
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 5,
                 center: new google.maps.LatLng(lat, lng)
             });
-        }
-    </script>
 
-    <script>
-        @foreach (var mapVars in ViewData.Model)
-        {
-            <text>
-            var marker = new google.maps.Marker
-            ({
-                position: new google.maps.LatLng(@mapVars.Lat, @mapVars.Long),
-                map: map,
-                title: "" + i,
+            @foreach (var i in ViewData.Model)
+            {
+
+                <text>
+
+                var marker = new google.maps.Marker
+                ({
+                    position: new google.maps.LatLng (@i.Lat, @i.Long),
+                    map: map,
+                    title: "" + (@i.id) @*+ " " + (@i.Region),*@
+                });
+                </text>
+                }
+            }
+
+        function getPosition(callback) {
+            var geocoder = new google.maps.Geocoder();
+            var postcode = document.getElementById("postcode").value;
+
+            geocoder.geocode({ 'address': postcode }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    callback({
+                        latt: results[0].geometry.location.lat(),
+                        long: results[0].geometry.location.lng()
+                    });
+                }
             });
+        }
+
+        function setup_map(latitude, longitude) {
+            var _position = new google.maps.LatLng(latitude, longitude);
+
+            var mapOptions = {
+                zoom: 14,
+                center: _position
+            }
+
+
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+
+
+            var radius = radSelect.value;
+
+            alert(radius);
+
+
+            @foreach (var i in ViewData.Model)
+            {
+                <text>
+            var testPos = new google.maps.LatLng(@i.Lat, @i.Long);
+
+            var distance = google.maps.geometry.spherical.computeDistanceBetween(testPos, _position);
+            var distKM = ((distance)/1000)
+
+            if (distKM < radius){
+                var markerPos = {lat: @i.Lat, lng: @i.Long};
+
+                var marker = new google.maps.Marker
+                ({
+                    position: new google.maps.LatLng (markerPos),
+                    map: map,
+                    title: "" + (@i.id),
+                });
+            }
+
+            else if (radius == "25+"){
+
+                var markerPos = {lat: @i.Lat, lng: @i.Long};
+
+                var marker = new google.maps.Marker
+                ({
+                    position: new google.maps.LatLng (markerPos),
+                    map: map,
+                    title: "" + (@i.id),
+                });
+            }
 
             </text>
+            }
+
+
+        }
+
+        window.onload = function () {
+
+            document.getElementById("form").onsubmit = function () {
+                getPosition(function (position) {
+
+
+
+                    setup_map(position.latt, position.long);
+
+
+                });
+            }
         }
     </script>
 
     
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfvqLwEOTU3oFoiJOmmloYJFYUA801lF8&callback=myMap"></script>
-
-
-
-    @foreach (var i in ViewData.Model)
-    {
-        <p>location is </p><p>@i.Lat @i.Long</p>
-
-    }
-
-
+    
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfvqLwEOTU3oFoiJOmmloYJFYUA801lF8&callback=myMap&libraries=geometry"></script>
+    <div id="text"></div>
 </body>
-
-
-
-
-
 </html>

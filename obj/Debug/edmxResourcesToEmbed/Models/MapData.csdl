@@ -5,10 +5,11 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <Property Name="City" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Lat" Type="Double" />
     <Property Name="Long" Type="Double" />
+    <Property Name="Region" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityContainer Name="Test_dbEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Test2" EntityType="Self.Test2" />

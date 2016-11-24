@@ -7,8 +7,9 @@ warning 6002: The table/view 'Test db.dbo.Test2' does not have a primary key def
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nchar" MaxLength="10" />
-    <Property Name="City" Type="nchar" MaxLength="10" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="Region" Type="nvarchar" MaxLength="50" />
     <Property Name="Lat" Type="float" />
     <Property Name="Long" Type="float" />
   </EntityType>
@@ -18,6 +19,7 @@ warning 6002: The table/view 'Test db.dbo.Test2' does not have a primary key def
     [Test2].[id] AS [id], 
     [Test2].[Name] AS [Name], 
     [Test2].[City] AS [City], 
+    [Test2].[Region] AS [Region], 
     [Test2].[Lat] AS [Lat], 
     [Test2].[Long] AS [Long]
     FROM [dbo].[Test2] AS [Test2]</DefiningQuery>
